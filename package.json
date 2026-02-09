@@ -1,0 +1,132 @@
+{
+  "name": "oss-upload",
+  "displayName": "oss-upload",
+  "publisher": "tchen-l",
+  "description": "阿里云文件上传工具",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tchen-l/oss-upload.git"
+  },
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "oss-upload.uploadFile",
+        "title": "上传到OSS"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "oss-upload.uploadFile",
+          "group": "oss@1"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "oss-upload.uploadFile",
+          "when": "false"
+        }
+      ]
+    },
+    "configuration": [
+      {
+        "type": "object",
+        "title": "oss-upload",
+        "properties": {
+          "ossUpload.config.region": {
+            "type": "string",
+            "default": "",
+            "description": "OSS服务的地域（如：oss-cn-hangzhou）",
+            "order": 1
+          },
+          "ossUpload.config.accessKeyId": {
+            "type": "string",
+            "default": "",
+            "description": "阿里云访问密钥ID",
+            "order": 2
+          },
+          "ossUpload.config.accessKeySecret": {
+            "type": "string",
+            "default": "",
+            "description": "阿里云访问密钥Secret",
+            "order": 3
+          },
+          "ossUpload.config.bucketList": {
+            "type": "array",
+            "default": [
+              {
+                "label": "测试环境",
+                "value": "test",
+                "remotePath": ""
+              }
+            ],
+            "description": "OSS存储桶列表",
+            "order": 4,
+            "items": {
+              "type": "object",
+              "properties": {
+                "label": {
+                  "type": "string",
+                  "description": "存储桶显示名称"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "存储桶名称"
+                },
+                "remotePath": {
+                  "type": "string",
+                  "description": "文件上传的远程路径前缀"
+                }
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "yarn run package",
+    "compile": "yarn run check-types && yarn run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "yarn run check-types && yarn run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "yarn run compile-tests && yarn run compile && yarn run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "vsce:package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/ali-oss": "^6.23.2",
+    "@types/co": "^4.6.6",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.109.0",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "@vscode/vsce": "^3.7.1",
+    "esbuild": "^0.27.2",
+    "eslint": "^9.39.2",
+    "npm-run-all": "^4.1.5",
+    "proxy-agent": "^6.5.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.54.0"
+  },
+  "dependencies": {
+    "ali-oss": "^6.23.0",
+    "co": "^4.6.0"
+  }
+}
